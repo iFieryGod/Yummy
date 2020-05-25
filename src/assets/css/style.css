@@ -1,0 +1,129 @@
+* {
+  color: #fff;
+}
+.custom-bg-dark {
+  background-color: #07070A !important;
+}
+nav.navbarTarget {
+  height: 5rem;
+}
+a.navbar-brand {
+  text-transform: uppercase;
+  letter-spacing: 2px;
+}
+span#app-name {
+  color: #FF00FF;
+}
+a.nav-link {
+  text-transform: uppercase;
+}
+
+div#app-container {
+  position: fixed;
+  top: 56px;
+  left: 0;
+  bottom: 95px;
+  width: 100%;
+  background-color: #1d2733;
+  overflow: auto;
+}
+
+footer#main-footer {
+  height: 7rem;
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  font-size: large;
+  padding: 1.2rem;
+  background-color: #07070A;
+}
+
+div.carousel-image-1 {
+  height: 350px;
+  background:linear-gradient(rgba(0, 0, 0, .8), rgba(0, 0, 0, .5)), url('../clem-onojeg.jpg') no-repeat center;
+  background-size: cover;
+  width: 100%;
+}
+div.carousel-image-2 {
+  height: 350px;
+  background:linear-gradient(rgba(0, 0, 0, .8), rgba(0, 0, 0, .5)), url('../jc-gellidon.jpg') no-repeat center;
+  background-size: cover;
+  width: 100%;
+}
+div.carousel-image-3 {
+  height: 350px;
+  background:linear-gradient(rgba(0, 0, 0, .8), rgba(0, 0, 0, .5)), url('../woman.jpg') no-repeat center;
+  background-size: cover;
+  width: 100%;
+}
+section#home-heading {
+  position: relative;
+  min-height: 450px;
+  background: url('../brunel-john.jpg') no-repeat center;
+  background-size: cover;
+  text-align: center;
+  color: #fff;
+}
+div.dark-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+}
+section#info {
+  background-color:rgba(255, 0, 255, 0.842);
+}
+h1#post-heading {
+  text-decoration: underline;
+}
+form#login-form {
+  position: fixed;
+  width: 100%;
+  margin-top: 6rem;
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+form#custom-register {
+  width: 100%;
+  position: fixed;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+}
+a.nav-item {
+  text-transform: uppercase;
+}
+div#nav-tab {
+  text-decoration: none;
+}
+span.nav-link {
+  cursor: pointer;
+  padding: 0 4px;
+  margin-bottom: 2px;
+}
+@media (max-width: 767px) {
+  div#nav-tab {
+    width: 100%;
+    position: fixed;
+    top: 50px;
+    left: 0;
+    padding-left: 2rem;
+    padding-bottom: 4px;
+    background-color:#07070A;
+  }
+  div#app-container {
+    position: fixed;
+    top: 80px;
+    left: 0;
+    bottom: 96px;
+    background-color: #1d2733;
+    overflow: auto;
+  }
+}
