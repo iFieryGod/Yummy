@@ -1,6 +1,9 @@
 * {
   color: #fff;
 }
+.text-warning {
+  color: #fdca40;
+}
 .custom-bg-dark {
   background-color: #07070A !important;
 }
@@ -19,13 +22,15 @@ a.nav-link {
 }
 
 div#app-container {
-  position: fixed;
-  top: 56px;
+  position: relative;
+  top: 0px;
+  height: 485px;
   left: 0;
   bottom: 95px;
   width: 100%;
-  background-color: #1d2733;
+  background-color:rgba(209, 3, 209, 0.746);
   overflow: auto;
+  overflow-x: hidden;
 }
 
 footer#main-footer {
@@ -73,7 +78,7 @@ div.dark-overlay {
   background: rgba(0, 0, 0, 0.5);
 }
 section#info {
-  background-color:rgba(255, 0, 255, 0.842);
+  background-color:rgba(209, 3, 209, 0.746);
 }
 h1#post-heading {
   text-decoration: underline;
@@ -108,6 +113,9 @@ span.nav-link {
   padding: 0 4px;
   margin-bottom: 2px;
 }
+label.col-form-label {
+  color: #000;
+}
 @media (max-width: 767px) {
   div#nav-tab {
     width: 100%;
@@ -119,11 +127,13 @@ span.nav-link {
     background-color:#07070A;
   }
   div#app-container {
-    position: fixed;
-    top: 80px;
+    position: relative;
+    height: 485px;
+    top: 24px;
     left: 0;
     bottom: 96px;
-    background-color: #1d2733;
+    width: 100%;
+    background-color:rgba(209, 3, 209, 0.746);
     overflow: auto;
   }
 }

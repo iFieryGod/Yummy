@@ -42,7 +42,7 @@
         <div class="col-md-6 align-self-center blog-post-messages">
           <small class="text-muted">- Date posted:</small>
             <small class="text-muted">Author:</small>
-          <a class="btn btn-danger btn-lg my-1 text-white" href="#">Read More</a>
+          <a class="btn btn-warning btn-lg my-1 text-white" href="#">Read More</a>
         </div>
         <div class="col-md-6 blog-pictures-right"><a href="#" data-toggle="lightbox">
         <img class="img-fluid" src="#" alt=""></a></div>
@@ -67,7 +67,7 @@
     <div class="container">
       <div class="row">
         <div class="col">
-          <h1 class="text-primary">Sign up for news letter</h1>
+          <h1 class="text-warning">Sign up for news letter</h1>
           <p class="text-justify">You're now part of a community that connects global designers with local artists across the world. Find a place to expose your inventory. Discover new things to do. Or share your work.</p>
           <form class="form-inline justify-content-center" method="post">
             <input class="form-control mb-2 mr-2" type="text" placeholder="Enter Name">

@@ -1,5 +1,5 @@
 <template>
-  <header class="py-2 bg-warning text-white" id="main-header">
+  <header class="py-2 text-white" id="main-header">
     <div class="container">
       <div class="row">
         <div class="col-md-6">
@@ -10,8 +10,8 @@
   <section class="actions py-4">
     <div class="col-md-6 ml-auto mr-auto mb-3">
       <div class="input-group">
-        <input class="form-control" type="text" placeholder="Search"><span class="input-group-btn"></span>
-        <button class="btn btn-warning text-white">Search</button>
+        <input class="form-control" type="text" placeholder="Type here"><span class="input-group-btn"></span>
+        <button class="btn btn-warning text-white font-weight-bold">Search</button>
       </div>
     </div>
   </section>
@@ -34,14 +34,17 @@
                   <td></td>
                   <td></td>
                   <td>
-                    <router-link to="/users/:id" class="btn btn-info btn-sm">
+                    <router-link to="/users/:id" class="btn btn-warning btn-sm">
                     <i class="fa fa-angle-double-right fa-xs"></i>
-                     <span>Edit</span> 
+                     <span class='font-weight-bold'>Edit</span> 
                     </router-link>
                   </td>  
-                  <form action="/" method="post">
-                  <input type="hidden" name="_method" value="DELETE">
-                  <td><button class="btn btn-danger btn-sm" type="submit"><i class="fa fa-remove fa-xs"></i> Delete </button></td></form>
+                  <td>
+                    <router-link to="/task/remove" class="btn btn-danger btn-sm" type="submit">
+                    <i class="fa fa-remove fa-xs"></i>
+                     <span class='font-weight-bold'>Delete</span> 
+                    </router-link>
+                    </td>
                 </tr>
                 <div>There are no users available</div>
               </tbody>

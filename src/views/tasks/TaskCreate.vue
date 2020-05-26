@@ -1,5 +1,5 @@
 <template>
- <header class="py-2 bg-primary text-white" id="main-header">
+ <header class="py-2 text-white" id="main-header">
     <div class="container">
       <div class="row">
         <div class="col-md-6">
@@ -10,11 +10,11 @@
   <section class="py-4 mb-4" id="actions">
     <div class="container">
       <div class="row">
-        <div class="col-md-3 mb-3"><a class="btn btn-primary btn-block" href="#" data-toggle="modal" data-target="#addPost"><i class="fas fa-plus"></i> Add Post</a></div>
+        <div class="col-md-3 mb-3"><a class="btn btn-warning btn-block text-white font-weight-bold" href="#" data-toggle="modal" data-target="#addPost"><i class="fas fa-plus"></i> Add Post</a></div>
         <div class="col-md-6 ml-auto">
           <div class="input-group">
-            <input class="form-control" type="text" placeholder="Search" /><span class="input-group-btn">
-              <button class="btn btn-primary">Search</button></span>
+            <input class="form-control" type="text" placeholder="Type here" /><span class="input-group-btn">
+              <button class="btn btn-warning text-white font-weight-bold">Search</button></span>
           </div>
         </div>
       </div>
@@ -23,18 +23,18 @@
   <div class="modal fade" id="addPost">
     <div class="modal-dialog modal-lg">
       <div class="modal-content">
-        <div class="modal-header bg-primary text-white">
+        <div class="modal-header bg-warning text-white">
           <h1 class="modal-title"><i class="fa fa-pencil"></i> Add Post</h1>
           <button class="close" data-dismiss="modal"><span>×</span></button>
         </div>
         <div class="modal-body">
-          <form action="/post" method="post" enctype="multipart/form-data">
+          <form>
             <div class="form-group">
-              <label for="title">Title</label>
+              <label for="title" class="col-form-label">Title</label>
               <input class="form-control" name="title" type="text" required/>
             </div>
             <div class="form-group">
-              <label for="image">Upload Image</label>
+              <label for="image" class="col-form-label">Upload Image</label>
               <div class="custom-file">
                 <input class="custom-file-input" type="file" name="image" id="image"/>
                 <label class="custom-file-label" for="image">Choose file</label>
@@ -42,9 +42,9 @@
               <small class="form-text text-muted">Max Size 5mb</small>
             </div>
             <div class="form-group">
-              <label for="body">Body</label>
+              <label for="body" class="col-form-label">Body</label>
               <textarea class="form-control" name="editor1" required></textarea>
-              <button class="btn btn-primary mt-2" type="submit">Save Changes</button>
+              <button class="btn btn-warning mt-2 text-white font-weight-bold" type="submit">Save Changes</button>
             </div>
           </form>
         </div>
@@ -56,13 +56,13 @@
       <div class="row">
         <div class="col">
             <h4>Latest Post</h4>
-            <table class="table table-responsive table-hover table-dark">
+            <table class="table table-responsive-md table-hover table-dark">
               <thead class="thead-dark">
                 <tr>
                   <th scope="col">Title</th>
                   <th scope="col">Comments</th>
-                  <th scope="col"></th>
-                  <th scope="col"></th>
+                  <th scope="col">#</th>
+                  <th scope="col">#</th>
                 </tr>
               </thead>
               <tbody>
@@ -70,14 +70,17 @@
                   <td class="font-weight-bold"/>
                   <td class="text-wrap"></td>
                   <td>
-                    <router-link to="/task/:id" class="btn btn-info">
+                    <router-link to="/task/:id" class="btn btn-warning btn-sm">
                     <i class="fa fa-angle-double-right"></i>
-                    <span>Edit</span> 
+                    <span class="font-weight-bold">Edit</span> 
                     </router-link>
                   </td>
-                  <form action="/" method="post">
-                  <input type="hidden" name="_method" value="DELETE">
-                  <td><button class="btn btn-danger text-white" type="submit"><i class="fa fa-remove"></i> Delete</button></td></form>
+                  <td>
+                     <router-link to="/task/remove" class="btn btn-danger btn-sm" type="submit">
+                    <i class="fa fa-remove fa-xs"></i>
+                     <span class="font-weight-bold">Delete</span> 
+                    </router-link>
+                  </td>
                 </tr>
                 <p>No Posts are yet available</p>
               </tbody>
@@ -87,5 +90,4 @@
     </div>
   </section>
 </header>
-
 </template>

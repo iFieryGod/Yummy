@@ -42,7 +42,7 @@
             </div>
           </div>
         </div>
-        <div class="col">
+        <div class="col mb-3">
           <div class="card-group">
             <div class="card text-center">
               <a href="#"><img class="img-fluid card-img-top" src="" width="150px"></a>
