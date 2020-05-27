@@ -19,6 +19,7 @@ span#app-name {
 }
 a.nav-link {
   text-transform: uppercase;
+  text-decoration: none !important;
 }
 
 div#app-container {
@@ -104,17 +105,34 @@ form#custom-register {
 }
 a.nav-item {
   text-transform: uppercase;
+  text-decoration: none !important;
 }
 div#nav-tab {
-  text-decoration: none;
+  text-decoration: none !important;
 }
 span.nav-link {
   cursor: pointer;
   padding: 0 4px;
   margin-bottom: 2px;
+  text-decoration: none !important;
 }
 label.col-form-label {
   color: #000;
+}
+section#editPost {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: center;
+}
+section#editUsers {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: center;
+}
+div.card {
+  width: 100% !important;
 }
 @media (max-width: 767px) {
   div#nav-tab {

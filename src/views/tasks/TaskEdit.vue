@@ -1,53 +1,52 @@
 <template>
-<header class="py-2 text-white edit-page-color" id="main-header">
-    <div class="container">
+<header class="py-2">
+    <div class="container-fluid">
       <div class="row">
         <div class="col-md-6">
           <h1><i class="fas fa-user-edit"></i> Edit</h1>
         </div>
       </div>
     </div>
-  <section class="py-4 mb-4 bg-light" id="actions">
-    <div class="container">
+  <section class="py-4 mb-4">
+    <div class="container-fluid">
       <div class="row">
-        <div class="col-md-3 mr-auto"><a class="btn edit-page-color text-white" href="/blog"><i class="fa fa-arrow-left"></i> Back To Blog </a></div>
+        <div class="col-md-3">
+          <router-link to="/taskAll" class="btn btn-warning">
+            <i class="fa fa-arrow-left"></i>
+            <span class='font-weight-bold'>Back To Blog</span> 
+          </router-link>
+        </div>
       </div>
     </div>
   </section>
-  <section class="mb-3" id="post">
+  <section class="mb-3" id="editPost">
     <div class="row">
       <div class="col-md-9">
         <div class="container">
-          <div class="row">
-            <div class="col">
-              <div class="card">
-                <div class="card-header">
-                  <h4>Edit Post</h4>
+          <div class="card">
+            <div class="card-header">
+              <h4 class="text-dark">Edit Post</h4>
+            </div>
+            <div class="card-body">
+                <div class="form-group">
+                  <label class="col-form-label">Title</label>
+                  <input class="form-control" name="title" type="text" value="">
                 </div>
-                <div class="card-body">
-                  <form action="/" method="post" enctype="multipart/form-data">
-                    <input type="hidden" name="_method" value="PUT">
-                    <div class="form-group">
-                      <label for="title">Title</label>
-                      <input class="form-control" name="title" type="text" value="">
-                    </div>
-                    <div class="form-group">
-                      <label for="file">Image Upload</label>
-                      <input class="form-control-file" type="file" name="image"><small class="form-test text-muted">Max Size 3MB</small>
-                    </div>
-                    <div class="form-group">
-                      <label for="message">Body</label>
-                      <textarea class="form-control" name="editor1"></textarea>
-                      <button class="btn edit-page-color text-white mt-2" type="submit">Save Changes</button>
-                    </div>
-                  </form>
+                <div class="form-group">
+                  <label for="file" class="col-form-label">Image Upload</label>
+                  <input class="form-control-file" type="file" name="image"><small class="form-test text-muted">Max Size 3MB</small>
                 </div>
-              </div>
+                <div class="form-group">
+                  <label for="message" class="col-form-label">Body</label>
+                  <textarea class="form-control" name="editor1"></textarea>
+                  <router-link to="/taskAll" class="btn btn-warning mt-2">
+                  <span class='font-weight-bold'>Save Changes</span> 
+                  </router-link>
+                </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
       <div class="col-md-3">
         <h3 class="text-center"></h3>
         <img src="/" class="d-block img-fluid mb-3 mr-auto ml-auto">
@@ -63,6 +62,7 @@
         </div> 
       </div>
     </div>
+  </div>
   </section>
 </header>
 </template>

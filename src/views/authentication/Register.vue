@@ -11,12 +11,15 @@
     <input type="text" class="form-control" id="last" placeholder="Last Name">
   </div>
   <div class="form-group w-50">
+    <input type="email" class="form-control" id="last" placeholder="Email Address">
+  </div>
+  <div class="form-group w-50">
     <input type="password" class="form-control" id="password" placeholder="Password">
   </div>
   <div class="form-group w-50">
     <input type="password" class="form-control" id="confirmPassword" placeholder='Confirm Password'>
   </div>
-  <button type="submit" class="btn btn-primary">Submit</button>
+  <button type="submit" class="btn btn-primary btn-lg">Submit</button>
 </form>
 </div>
 </template>

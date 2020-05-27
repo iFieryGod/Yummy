@@ -10,6 +10,7 @@ import TaskEdit from '../views/tasks/TaskEdit.vue'
 import TaskEditUser from '../views/tasks/TaskEditUser.vue'
 import TaskRemove from '../views/tasks/TaskRemove.vue'
 
+const isLoggedIn = false
 
 Vue.use(VueRouter)
 
@@ -22,42 +23,98 @@ Vue.use(VueRouter)
   {
     path: '/login',
     name: 'Login',
-    component: Login
+    component: Login, 
+    beforeEnter: (to, from, next) => {
+      if(!isLoggedIn) {
+        next();
+      } else {
+        next('/');
+      }
+    }
   },
   {
     path: '/register',
     name: 'Register',
-    component: Register
+    component: Register, 
+    beforeEnter: (to, from, next) => {
+      if(!isLoggedIn) {
+        next();
+      } else {
+        next('/');
+      }
+    }
   },
   {
     path: '/task',
     name: 'TaskAll',
-    component: TaskAll
+    component: TaskAll, 
+    beforeEnter: (to, from, next) => {
+      if(isLoggedIn) {
+        next();
+      } else {
+        next('/login');
+      }
+    }
   },
   {
     path: '/task/new',
     name: 'TaskCreate',
-    component: TaskCreate
+    component: TaskCreate, 
+    beforeEnter: (to, from, next) => {
+      if(isLoggedIn) {
+        next();
+      } else {
+        next('/login');
+      }
+    }
   },
   {
     path: '/task/:id',
     name: 'TaskEdit',
-    component: TaskEdit
+    component: TaskEdit, 
+    beforeEnter: (to, from, next) => {
+      if(isLoggedIn) {
+        next();
+      } else {
+        next('/login');
+      }
+    }
   },
   {
     path: '/task/remove',
     name: 'Remove',
-    component: TaskRemove
+    component: TaskRemove, 
+    beforeEnter: (to, from, next) => {
+      if(isLoggedIn) {
+        next();
+      } else {
+        next('/login');
+      }
+    }
   },
   {
     path: '/users',
     name: 'Users',
-    component: Users
+    component: Users, 
+    beforeEnter: (to, from, next) => {
+      if(isLoggedIn) {
+        next();
+      } else {
+        next('/login');
+      }
+    }
   },
   {
     path: '/users/:id',
     name: 'TaskEditUser',
-    component: TaskEditUser
+    component: TaskEditUser, 
+    beforeEnter: (to, from, next) => {
+      if(isLoggedIn) {
+        next();
+      } else {
+        next('/login');
+      }
+    }
   },
   {
     path: '*',
@@ -69,7 +126,7 @@ Vue.use(VueRouter)
 const router = new VueRouter({
   mode: 'history',
   base: process.env.BASE_URL,
-  routes
+  routes,
 })
 
 export default router

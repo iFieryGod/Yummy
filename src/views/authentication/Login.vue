@@ -1,16 +1,28 @@
 <template>
 <div class="text-center">
- <form id="login-form">
+ <form id="login-form" v-on:submit='onSubmit'>
   <div class="form-group w-50">
-    <label class="label font-weight-bold">Email address</label>
-    <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
-    <small id="emailHelp" class="form-text text-dark">We'll never share your email with anyone else.</small>
+    <label for="username" class="label font-weight-bold">Username</label>
+    <input type="text" class="form-control" id="username" placeholder="Username">
   </div>
   <div class="form-group w-50">
-    <label class='label font-weight-bold'>Password</label>
-    <input type="password" class="form-control" id="exampleInputPassword1">
+    <label for="password" class='label font-weight-bold'>Password</label>
+    <input type="password" class="form-control" placeholder="Password">
   </div>
-  <button type="submit" class="btn btn-primary">Login</button>
+  <button type="submit" class="btn btn-primary btn-lg">Login</button>
 </form>
 </div>
 </template>
+<script>
+import * as auth from '../../services/authServices'
+export default {
+  name: 'login',
+  methods: {
+    onSubmit: function(event) {
+      event.preventDefault();
+      auth.login();
+      this.push({ name: 'Home' });
+    }
+  }
+}
+</script>
