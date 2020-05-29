@@ -35,9 +35,8 @@ div#app-container {
 }
 
 footer#main-footer {
-  height: 7rem;
+  /* height: 7rem; */
   position: fixed;
-  bottom: 0;
   width: 100%;
   font-size: large;
   padding: 1.2rem;
@@ -149,9 +148,53 @@ div.card {
     height: 485px;
     top: 24px;
     left: 0;
-    bottom: 96px;
+    /* bottom: 96px; */
     width: 100%;
     background-color:rgba(209, 3, 209, 0.746);
     overflow: auto;
+  }
+  section#home-heading {
+    position: relative;
+    min-height: 450px !important;
+    background: url('../brunel-john.jpg') no-repeat center;
+    background-size: cover;
+    text-align: center;
+    color: #fff;
+  }
+}
+@media(max-width: 991px) {
+  section#home-heading {
+    position: relative;
+    min-height: 530px;
+    background: url('../brunel-john.jpg') no-repeat center;
+    background-size: cover;
+    text-align: center;
+    color: #fff;
+  }
+}
+@media (max-width: 430px) {
+  section#home-heading {
+    position: relative;
+    min-height: 520px !important;
+    background: url('../brunel-john.jpg') no-repeat center;
+    background-size: cover;
+    text-align: center;
+    color: #fff;
+  }
+  div#nav-tab {
+    width: 100%;
+    position: fixed;
+    top: 53px;
+    left: 0;
+    padding-left: 1rem;
+    padding-bottom: 4px;
+    background-color:#07070A;
+  }
+  span.nav-link {
+    cursor: pointer;
+    padding: 0 2px;
+    margin-bottom: 2px;
+    font-size: 14px;
+    text-decoration: none !important;
   }
 }
