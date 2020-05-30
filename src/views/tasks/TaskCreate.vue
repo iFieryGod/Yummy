@@ -28,24 +28,25 @@
           <button class="close" data-dismiss="modal"><span>×</span></button>
         </div>
         <div class="modal-body">
-          <form>
+          <form ref='form'>
             <div class="form-group">
               <label for="title" class="col-form-label">Title</label>
-              <input class="form-control" name="title" type="text" required/>
+              <input class="form-control" v-model='title' type="text" required/>
             </div>
-            <div class="form-group">
+            <!-- <div class="form-group">
               <label for="image" class="col-form-label">Upload Image</label>
               <div class="custom-file">
                 <input class="custom-file-input" type="file" name="image" id="image"/>
                 <label class="custom-file-label" for="image">Choose file</label>
               </div>
               <small class="form-text text-muted">Max Size 5mb</small>
-            </div>
+            </div> -->
             <div class="form-group">
               <label for="body" class="col-form-label">Body</label>
-              <textarea class="form-control" name="editor1" required></textarea>
-              <button class="btn btn-warning mt-2 text-white font-weight-bold" type="submit">Save Changes</button>
+              <textarea class="form-control" v-model='description' required></textarea>
             </div>
+            <button class="btn btn-warning mt-2 text-white font-weight-bold" @click="submit">Save Changes</button>
+              <button class="btn btn-warning mt-2 ml-2 text-white font-weight-bold" @click="clear">Reset Form</button>
           </form>
         </div>
       </div>
@@ -91,3 +92,34 @@
   </section>
 </header>
 </template>
+<script>
+import axios from 'axios'
+export default {
+  data: () => ({
+    title: '',
+    description: '',
+  }),
+  methods: {
+    submit(e) {
+        e.preventDefault();
+        return axios.post('http://localhost:8081/posts',
+          {  title: this.title,
+             description: this.description
+          },
+          { headers: {
+            'Content-Type': 'application/json'
+          }
+        })
+        .then(() => {
+          // Thinking of adding a function to route back to the home page or taskCreate page
+          // this.$router.push({ name: 'Home'})
+          this.$refs.form.reset();
+        }).catch(() => {
+        });
+    },
+    clear() {
+      this.$refs.form.reset();
+    },
+  },
+};
+</script>
