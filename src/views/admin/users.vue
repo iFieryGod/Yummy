@@ -23,30 +23,29 @@
             <table class="table table-responsive-md table-hover table-dark">
               <thead class="thead-dark">
                 <tr>
-                  <th scope="col">First Name</th>
+                  <th scope="col">User Name</th>
                   <th scope="col">Email Address</th>
                   <th scope="col">#</th>
                   <th scope="col">#</th>
                 </tr>
               </thead>
               <tbody>
-                <tr>
-                  <td></td>
-                  <td></td>
+                <tr v-for="user in users" :key="user._id">
+                  <td>{{ user.userName }}</td>
+                  <td>{{ user.emailAddress }}</td>
                   <td>
-                    <router-link to="/users/:id" class="btn btn-warning btn-sm">
+                    <router-link v-bind:to="`/users/${user._id}`" class="btn btn-warning btn-sm">
                     <i class="fa fa-angle-double-right fa-xs"></i>
                      <span class='font-weight-bold'>Edit</span> 
                     </router-link>
                   </td>  
                   <td>
-                    <router-link to="/task/remove" class="btn btn-danger btn-sm" type="submit">
+                    <router-link v-bind:to="`/users/remove/${user._id}`" class="btn btn-danger btn-sm">
                     <i class="fa fa-remove fa-xs"></i>
                      <span class='font-weight-bold'>Delete</span> 
                     </router-link>
                     </td>
                 </tr>
-                <div>There are no users available</div>
               </tbody>
             </table>
         </div>
@@ -55,3 +54,24 @@
   </section>
   </header>  
 </template>
+<script>
+import axios from 'axios'
+export default {
+  data: () => ({
+    users: [],
+  }),
+  mounted() {
+    this.fetchUsers();
+  },
+  methods: { 
+    async fetchUsers() {
+      return axios.get('http://localhost:8081/users')
+      .then((response) => {
+        this.users = response.data.user
+      })
+      .catch(() => {
+      });
+    },
+  },
+};
+</script>

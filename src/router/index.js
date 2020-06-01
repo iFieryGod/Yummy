@@ -10,7 +10,7 @@ import TaskEdit from '../views/tasks/TaskEdit.vue'
 import TaskEditUser from '../views/tasks/TaskEditUser.vue'
 import TaskRemove from '../views/tasks/TaskRemove.vue'
 
-const isLoggedIn = false
+const isLoggedIn = true
 
 Vue.use(VueRouter)
 
