@@ -105,7 +105,8 @@ export default {
         this.lastName = '',
         this.mail = '',
         this.password = '',
-        this.confirmPassword = ''
+        this.confirmPassword = '',
+        this.$router.push('/')
         })
         .catch(() => {
           this.$swal('Oh no!', 'Could not add user', 'error',);

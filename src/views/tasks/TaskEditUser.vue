@@ -28,41 +28,31 @@
               <h4 class='text-dark'>Edit User</h4>
             </div>
             <div class="card-body">
-              <form ref='form' @submit.prevent='onSubmit()'>
+              <form ref='form' @submit.prevent='editUser()'>
                 <div class="form-group">
                   <label for="name" class="col-form-label">Username</label>
-                  <input class="form-control" name="name" type="text" v-model="user.userName" :class="{error: validation.hasError('userName'), valid: validation.isTouched('userName') && !validation.hasError('userName')}">
-                  <div class="error" v-if="validation.hasError('userName')">{{ validation.firstError('userName')}}</div>
+                  <input class="form-control" type="text" v-model="user.userName" :class="{error: validation.hasError('user.userName'), valid: validation.isTouched('user.userName') && !validation.hasError('user.userName')}">
+                  <div class="error" v-if="validation.hasError('user.userName')">{{ validation.firstError('user.userName')}}</div>
                 </div>
                 <div class="form-group">
                   <label for="name" class="col-form-label">First name</label>
-                  <input class="form-control" name="name" type="text" v-model="user.firstName" :class="{error: validation.hasError('firstName'), valid: validation.isTouched('firstName') && !validation.hasError('firstName')}">
-                  <div class="error" v-if="validation.hasError('firstName')">{{ validation.firstError('firstName')}}</div>
+                  <input class="form-control" type="text" v-model="user.firstName" :class="{error: validation.hasError('user.firstName'), valid: validation.isTouched('user.firstName') && !validation.hasError('user.firstName')}">
+                  <div class="error" v-if="validation.hasError('user.firstName')">{{ validation.firstError('user.firstName')}}</div>
                 </div>
                 <div class="form-group">
                   <label for="lastName" class="col-form-label">Last name</label>
-                  <input class="form-control" name="lastName" type="text" v-model="user.lastName" :class="{error: validation.hasError('lastName'), valid: validation.isTouched('lastName') && !validation.hasError('lastName')}">
-                  <div class="error" v-if="validation.hasError('lastName')">{{ validation.firstError('lastName')}}</div>
+                  <input class="form-control" type="text" v-model="user.lastName" :class="{error: validation.hasError('user.lastName'), valid: validation.isTouched('user.lastName') && !validation.hasError('user.lastName')}">
+                  <div class="error" v-if="validation.hasError('user.lastName')">{{ validation.firstError('user.lastName')}}</div>
                 </div>
                 <div class="form-group">
                   <label for="email" class="col-form-label">Email Address</label>
-                  <input class="form-control" name="email" type="email" v-model="user.emailAddress" :class="{error: validation.hasError('emailAddress'), valid: validation.isTouched('emailAddress') && !validation.hasError('emailAddress')}">
-                  <div class="error" v-if="validation.hasError('emailAddress')">{{ validation.firstError('emailAddress')}}</div>
+                  <input class="form-control" type="email" v-model="user.emailAddress" :class="{error: validation.hasError('user.emailAddress'), valid: validation.isTouched('user.emailAddress') && !validation.hasError('user.emailAddress')}">
+                  <div class="error" v-if="validation.hasError('user.emailAddress')">{{ validation.firstError('user.emailAddress')}}</div>
                 </div>
                 <div class="form-group">
-                  <label for="password" class="col-form-label">Password</label>
-                  <input class="form-control" type="password" name="password" minlength="6" maxlength="12" v-model="user.password" :class="{error: validation.hasError('password'), valid: validation.isTouched('password') && !validation.hasError('password')}">
-                  <div class="error" v-if="validation.hasError('password')">{{ validation.firstError('password')}}</div>
-                </div>
-                <div class="form-group">
-                  <label for="confirmPassword" class="col-form-label">Confirm Password</label>
-                  <input class="form-control" type="password" name="confirmPassword" v-model="user.password" :class="{error: validation.hasError('confirmPassword'), valid: validation.isTouched('confirmPassword') && !validation.hasError('confirmPassword')}">
-                  <div class="error" v-if="validation.hasError('confirmPassword')">{{ validation.firstError('confirmPassword')}}</div>
-                </div>
-                <div class="form-group">
-                <router-link to="/taskAll" class="btn btn-warning mt-2">
-                  <span class='font-weight-bold'>Save Changes</span> 
-                  </router-link>
+                <div>
+                  <button class='font-weight-bold btn btn-warning mt-2 text-white' type="submit" :disabled="validation.countErrors() > 0">Save Changes</button> 
+                  </div>
                 </div>
               </form>
             </div>
@@ -78,59 +68,63 @@ import axios from 'axios'
 import { Validator } from 'simple-vue-validator'
 export default {
   data: () => ({
-    user: [],
+    user: {},
   }),
   mounted() {
-    // this.fetchUser();
     this.fetchUsers();
   },
   validators: {
-    firstName (value) {
+    'user.firstName': function(value) {
       return Validator.value(value).required().minLength(4);
     },
-    userName (value) {
+    'user.userName': function(value) {
+      return Validator.value(value).required().minLength(4)
+    },
+    'user.lastName': function(value) {
       return Validator.value(value).required().minLength(4);
     },
-    lastName(value) {
-      return Validator.value(value).required().minLength(4);
-    },
-    emailAddress(value){
+    'user.emailAddress': function(value){
       return Validator.value(value).required().email();
-    },
-    password(value) {
-      return Validator.value(value).required().minLength(6);
-    },
-    'confirmPassword, password': function(confirmPassword, password) {
-      if(this.submitted || this.validation.isTouched('confirmPassword') || this.validation.isTouched('password')) {
-        return Validator.value(confirmPassword).required().match(password);
-      }
-      return true;
     }
   },
   methods: {
+    editUser() {
+      this.$validate()
+      .then((success) => {
+        if(success){
+          let user = [this.user.userName, this.user.firstName, this.user.lastName].map((user) => {
+              return user.charAt(0).toUpperCase() + user.slice(1)
+        })
+        return axios.put(`http://localhost:8081/users/${this.$route.params.id}`, {
+        userName: user[0],
+        firstName: user[1],
+        lastName: user[2],
+        emailAddress: this.user.emailAddress,
+      })
+      .then(() => {
+        this.$swal(
+          'Great!',
+          'User updated successfully!',
+          'success',
+        );
+        this.$router.push('/users')
+      })
+      .catch(() => {
+        this.$swal('Oh no!', 'Could not update user', 'error',);
+        })
+        }
+      }).catch(() =>{
+      })
+      
+    },
     async fetchUsers() {
       return axios.get(`http://localhost:8081/users/${this.$route.params.id}`)
       .then((response) => {
-        console.log(response)
         this.user = response.data
       })
       .catch(() => {
       });
     },
-    async onSubmit() {
-      return axios.post(`http://localhost:8081/users/${this.$route.params.id}`, {
-        userName: this.user.userName,
-        firstName: this.user.firstName,
-        lastName: this.user.lastName,
-        emailAddress: this.user.emailAddress,
-        password: this.user.password
-      })
-      .then((response) => {
-        this.user = response.data
-      })
-      .catch(() => {
-        })
-    }
   }
 }
 </script>

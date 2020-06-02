@@ -67,23 +67,23 @@
                 </tr>
               </thead>
               <tbody>
-                <tr>
-                  <td class="font-weight-bold"/>
-                  <td class="text-wrap"></td>
+                <tr v-for="post in posts" :key="post._id">
+                  <td class="font-weight-bold">{{ post.title }}</td>
+                  <td class="text-wrap">{{ post.description }}</td>
                   <td>
-                    <router-link to="/task/:id" class="btn btn-warning btn-sm">
+                    <router-link v-bind:to="`/task/${post._id}`" class="btn btn-warning btn-sm">
                     <i class="fa fa-angle-double-right"></i>
                     <span class="font-weight-bold">Edit</span> 
                     </router-link>
                   </td>
                   <td>
-                     <router-link to="/task/remove" class="btn btn-danger btn-sm" type="submit">
+                     <router-link v-bind:to="`/task/remove/${post._id}`" class="btn btn-danger btn-sm">
                     <i class="fa fa-remove fa-xs"></i>
                      <span class="font-weight-bold">Delete</span> 
                     </router-link>
                   </td>
                 </tr>
-                <p>No Posts are yet available</p>
+                <p v-show="posts.length <= 0">No Posts are yet available</p>
               </tbody>
             </table>
           </div>
@@ -98,7 +98,11 @@ export default {
   data: () => ({
     title: '',
     description: '',
+    posts: [],
   }),
+  mounted() {
+    this.fetchPosts();
+ },
   methods: {
     submit(e) {
         e.preventDefault();
@@ -119,6 +123,15 @@ export default {
     },
     clear() {
       this.$refs.form.reset();
+    },
+    async fetchPosts(){
+      return axios.get('http://localhost:8081/posts')
+      .then((response) => {
+        this.posts = response.data
+      })
+      .catch((error) => {
+        console.log(error)
+      })
     },
   },
 };

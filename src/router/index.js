@@ -2,6 +2,7 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Home from '../views/Home.vue'
 import Users from '../views/admin/users.vue'
+import UsersRemove from '../views/admin/usersRemove.vue'
 import Login from '../views/authentication/Login.vue'
 import Register from '../views/authentication/Register.vue'
 import TaskAll from '../views/tasks/TaskAll.vue'
@@ -81,7 +82,7 @@ Vue.use(VueRouter)
     }
   },
   {
-    path: '/task/remove',
+    path: '/task/remove/:id',
     name: 'Remove',
     component: TaskRemove, 
     beforeEnter: (to, from, next) => {
@@ -112,6 +113,18 @@ Vue.use(VueRouter)
       if(isLoggedIn) {
         next();
       } else {
+        next('/login');
+      }
+    }
+  },
+  {
+    path: '/users/remove/:id',
+    name: 'TaskRemoveUser',
+    component: UsersRemove,
+    beforeEnter: (to, from, next) => {
+      if(isLoggedIn) {
+        next();
+      } else{
         next('/login');
       }
     }

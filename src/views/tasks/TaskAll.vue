@@ -12,59 +12,44 @@
     <div class="container">
       <div class="row row-cols-1 row-cols-md-3">
         <div class="col">
-          <div class="card-group">
+          <div class="card-group my-3" v-for="post in posts" :key="post._id">
             <div class="card text-center">
               <a href="#"><img class="img-fluid card-img-top" src=""></a>
-              <card-body>
-                <h4 class="card-title text-dark">Goran Kennel</h4><small class="text-muted">Written by Goran</small>
+              <div card-body>
+                <h4 class="card-title text-dark">{{ post.title }}</h4><small class="text-muted">Written by Goran</small>
                 <hr>
-                <p class="card-text mb-2 text-dark">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Unde quod tempore itaque.</p>
-              </card-body>
+                <p class="card-text mb-2 text-dark">{{ post.description }}</p>
+              </div>
               <div class="card-footer">
                 <small class="text-muted">Date</small>
               </div>
             </div>
           </div>
-        </div>
-        <div class="col">
-          <div class="card-group">
-            <div class="card text-center">
-              <a href="#"><img class="img-fluid card-img-top" src="" width="150px"></a>
-              <card-body>
-                <h4 class="card-title text-dark">Jacob Marks</h4><small class="text-muted">Written by Jacob</small>
-                <hr>
-                <p class="card-text mb-2 text-dark">Lorem ipsum dolor sit amet consectetur, adipisicing elit. Autem incidunt quas mollitia sed excepturi. Explicabo tempora nisi quasi quisquam aliquid?
-                </p>
-              </card-body>
-              <div class="card-footer">
-                <small class="text-muted">Date</small>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="col mb-3">
-          <div class="card-group">
-            <div class="card text-center">
-              <a href="#"><img class="img-fluid card-img-top" src="" width="150px"></a>
-              <card-body>
-                <h4 class="card-title text-dark">Gary Owens</h4><small class="text-muted">Written by Gary</small>
-                <hr>
-                <p class="card-text mb-2 text-dark">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Ratione dolore dicta soluta veniam distinctio nisi, numquam mollitia. Officiis, vitae temporibus! Saepe, corrupti iure.
-                </p>
-              </card-body>
-              <div class="card-footer">
-                <small class="text-muted">Date</small>
-              </div>
-            </div>
-          </div>
-        </div>
+        </div>  
       </div>
     </div>
   </section>
   </header>
 </template>
 <script>
+import axios from 'axios'
 export default {
-  
+  data: () => ({
+    posts: [], 
+  }),
+  mounted() {
+    this.fetchPosts();
+ },
+  methods: {
+    async fetchPosts(){
+      return axios.get('http://localhost:8081/posts')
+      .then((response) => {
+        this.posts = response.data
+      })
+      .catch((error) => {
+        console.log(error)
+      });
+    },
+  },
 }
 </script>
