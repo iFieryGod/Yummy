@@ -11,7 +11,7 @@ import TaskEdit from '../views/tasks/TaskEdit.vue'
 import TaskEditUser from '../views/tasks/TaskEditUser.vue'
 import TaskRemove from '../views/tasks/TaskRemove.vue'
 
-const isLoggedIn = true
+const isLoggedIn = false 
 
 Vue.use(VueRouter)
 
@@ -49,18 +49,11 @@ Vue.use(VueRouter)
     path: '/task',
     name: 'TaskAll',
     component: TaskAll, 
-    beforeEnter: (to, from, next) => {
-      if(isLoggedIn) {
-        next();
-      } else {
-        next('/login');
-      }
-    }
   },
   {
     path: '/task/new',
     name: 'TaskCreate',
-    component: TaskCreate, 
+    component: TaskCreate,
     beforeEnter: (to, from, next) => {
       if(isLoggedIn) {
         next();

@@ -11,7 +11,7 @@
     <div class="container-fluid">
       <div class="row">
         <div class="col-md-3">
-          <router-link to="/taskAll" class="btn btn-warning">
+          <router-link to="/task/new" class="btn btn-warning">
             <i class="fa fa-arrow-left"></i>
             <span class='font-weight-bold'>Back To Blog</span> 
           </router-link>
@@ -28,15 +28,26 @@
               <h4 class="text-dark">Edit Post</h4>
             </div>
             <div class="card-body">
-              <form ref="form" @submit.prevent='editPost()'>
+              <form ref="form" @submit.prevent='editPost'>
                 <div class="form-group">
                   <label class="col-form-label">Title</label>
                   <input class="form-control" type='text' v-model="post.title" :class="{error: validation.hasError('post.title'), valid: validation.isTouched('post.title') && !validation.hasError('post.title')}">
                    <div class="error" v-if="validation.hasError('post.title')">{{ validation.firstError('post.title')}}</div>
                 </div>
-                <div class="form-group">
-                  <label for="file" class="col-form-label">Image Upload</label>
-                  <input class="form-control-file" type="file" name="image"><small class="form-test text-muted">Max Size 3MB</small>
+                 <div class="form-group">
+                   <label class="col-form-label">Upload Image</label>
+                   <div class="dropbox">
+                   <input class="custom-file-input" accept="image/*" type="file" ref='file' @change="onSelect"/>
+                   <p>Drag you files here</p>
+                   </div>
+                  <small class="form-text text-muted">Max Size 5mb</small>
+                  <div class="message">
+                  <p class="text-dark">{{ message }}</p>
+                  </div>
+                  <div>
+                  <img v-show="showPreview" v-bind:src="previewImage" class="uploading-image">
+                  <p class='text-dark' v-show="showPreview">You are about to replace the picture you previously uploaded</p>
+                  </div>
                 </div>
                 <div class="form-group">
                   <label for="message" class="col-form-label">Body</label>
@@ -50,14 +61,17 @@
         </div>
       </div>
       <div class="col-md-3">
-        <h3 class="text-center"></h3>
-        <img src="/" class="d-block img-fluid mb-3 mr-auto ml-auto">
+        <div class='container-fluid'>
+          <h3 class="text-center">{{ post.title }}</h3>
+        <img v-if="doNotShow" :src="require(`@/assets/${post.img}`)" class="img-fluid mb-3">
+        <img v-else v-bind:src="previewImage" class="img-fluid mb-3">
+        </div>
         <div class="container">
           <h4>Related Posts</h4>
           <div class="row">
             <div class="col-6">
               <h5></h5>
-              <img src="/" class="d-block img-fluid mb-3 mr-auto" style="width: 120px; height: 80px;">
+              <img src="#" class="d-block img-fluid mb-3 mr-auto" style="width: 120px; height: 80px;">
             <div class="col-6">
             </div>
           </div>
@@ -74,6 +88,13 @@ import { Validator } from 'simple-vue-validator'
 export default {
   data: () => ({
     post: {},
+    title: '',
+    description: '',
+    file: '',
+    message: '',
+    previewImage: '',
+    showPreview: false,
+    doNotShow: true,
   }),
   mounted() {
     this.fetchPost();
@@ -87,6 +108,32 @@ export default {
     }
   },
   methods: {
+    onSelect() {
+      const allowedTypes = ["image/jpg", "image/jpeg", "image/png"];
+      const file = this.$refs.file.files[0];
+      this.file = file;
+      if(!allowedTypes.includes(file.type)){
+        this.message = 'Only images are required!!'
+      }
+      if(file.size>5000000){
+        this.message = 'Too large, max size allowed is 5mb'
+      }
+      const reader = new FileReader();
+      reader.readAsDataURL(file)
+      reader.addEventListener("load", function () {
+        this.showPreview = true;
+        this.doNotShow = false;
+        this.previewImage = reader.result;
+      }.bind(this), false);
+      
+      if(file){
+
+        if( /\.(jpe?g|png|gif)$/i.test( this.file.name)){
+
+          reader.readAsDataURL( this.file)
+        }
+      }
+    },
     editPost(){
       this.$validate()
       .then((success) => {
@@ -94,9 +141,14 @@ export default {
           let post = [this.post.title, this.post.description].map((post) => {
             return post.charAt(0).toUpperCase() + post.slice(1)
           })
-          return axios.put(`http://localhost:8081/task/${this.$route.params.id}`, {
-            title: post[0],
-            description: post[1],
+        const formData = new FormData();
+          formData.append('img', this.file)
+          formData.append('title', post[0])
+          formData.append('description', post[1])
+          return axios.put(`http://localhost:8081/task/${this.$route.params.id}`, formData, {
+            headers: {
+              'Content-Type': 'multipart/form-data'
+            }
           })
           .then(() => {
             this.$swal(
@@ -118,8 +170,13 @@ export default {
       .catch(() => {
       })
     },
+    clear() {
+      this.$refs.form.reset()
+    },
     async fetchPost() {
-      return axios.get(`http://localhost:8081/task/${this.$route.params.id}`)
+      const token = window.localStorage.getItem('auth');
+      return axios.get(`http://localhost:8081/task/${this.params.id}`,
+       { headers: { Authorization: `${token}` } })
       .then((response) => {
         this.post = response.data
       })
@@ -129,3 +186,37 @@ export default {
   }
 }
 </script>
+<style scoped>
+.dropbox {
+  outline: 2px dashed darkslategrey; /* the dashed box */
+  outline-offset: -10px;
+  border-radius: 7px;
+  background: rgb(240, 240, 44);
+  color: dimgray;
+  padding: 10px 10px;
+  min-height: 200px;
+  position: relative;
+  cursor: pointer;
+}
+.custom-file-input {
+  opacity: 0;
+  width: 100%;
+  height: 200px;
+  position: absolute;
+  cursor: pointer;
+}
+.dropbox:hover {
+  background: rgba(236, 236, 48, 0.863);
+}
+.dropbox p {
+  font-size: 1.2rem;
+  text-align: center;
+  padding: 50px 0;
+  color: black;
+}
+.uploading-image {
+  display: flex;
+  width: 18rem;
+  border-radius: 7px;
+}
+</style>

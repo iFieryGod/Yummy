@@ -38,14 +38,16 @@
   <section class="py-3" id="info">
     <div class="container">
       <h1 class="py-3 display-4 text-white font-weight-bold" id="post-heading">Latest Post</h1>
-      <div class="row mt-4">
+      <div class="row mt-4" v-for="post in posts" :key="post._id">
         <div class="col-md-6 align-self-center blog-post-messages">
-          <small class="text-muted">- Date posted:</small>
-            <small class="text-muted">Author:</small>
+          <h3>{{ post.title }}</h3>
+          <p class="lead mt-2">{{ post.description }}</p>
+          <small class="text-white">- Date posted: {{$moment(post.created_at).format('MMMM Do YYYY')}}</small>
+          <p class="text-white">Author:</p>
           <a class="btn btn-warning btn-lg my-1 text-white" href="#">Read More</a>
         </div>
         <div class="col-md-6 blog-pictures-right"><a href="#" data-toggle="lightbox">
-        <img class="img-fluid" src="#" alt=""></a></div>
+        <img id="home-images" class="img-fluid" :src="require(`@/assets/${post.img}`)" alt=""></a></div>
       </div>
     </div>
   </section>
@@ -82,10 +84,31 @@
 </template>
 
 <script>
+import axios from 'axios'
 export default {
   name: 'HelloWorld',
+  data: () => ({
+    posts: [],
+  }),
   props: {
     msg: String
+  },
+  mounted() {
+    this.fetchPosts();
+  },
+  methods: {
+    date: function ( timestamp ) {
+      return this.$moment(timestamp).format('YYYY-MM-DD')
+    },
+    async fetchPosts(){
+      return axios.get('http://localhost:8081/home')
+      .then((response) => {
+        this.posts = response.data
+      })
+      .catch((err) => {
+        console.log(err)
+      })
+    }
   }
 }
 </script>
@@ -105,5 +128,17 @@ li {
 }
 a {
   color: #42b983;
+}
+#home-images {
+  width: 32rem;
+  max-height: 26rem;
+}
+@media (max-width: 768px) {
+  .blog-post-messages{
+    order: 2;
+  }
+  .blog-pictures-right{
+    order: 1;
+  }
 }
 </style>

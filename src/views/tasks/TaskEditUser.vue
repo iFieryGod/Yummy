@@ -95,12 +95,13 @@ export default {
           let user = [this.user.userName, this.user.firstName, this.user.lastName].map((user) => {
               return user.charAt(0).toUpperCase() + user.slice(1)
         })
+        const token = window.localStorage.getItem('auth');
         return axios.put(`http://localhost:8081/users/${this.$route.params.id}`, {
         userName: user[0],
         firstName: user[1],
         lastName: user[2],
         emailAddress: this.user.emailAddress,
-      })
+      }, { headers: { Authorization: `${token}` } })
       .then(() => {
         this.$swal(
           'Great!',

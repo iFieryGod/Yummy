@@ -45,7 +45,10 @@ export default {
       });
     },
     async fetchPost() {
-      return axios.get(`http://localhost:8081/task/${this.$route.params.id}`)
+      const token = window.localStorage.getItem('auth');
+      return axios.get(`http://localhost:8081/task/${this.params.id}`, {
+      headers: { Authorization: `${token}` }
+   })
       .then((response) => {
         console.log(response.data)
         this.post = response.data

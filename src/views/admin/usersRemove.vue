@@ -44,7 +44,10 @@ export default {
       this.$router.push('/users')
     },
     async fetchOneUser() {
-      return axios.get(`http://localhost:8081/users/${this.$route.params.id}`)
+      const token = window.localStorage.getItem('auth');
+      return axios.get(`http://localhost:8081/users/${this.params.id}`, {
+        headers: { Authorization: `JWT ${token}` }
+      })
       .then((response) => {
         this.user = response.data
       })

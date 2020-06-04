@@ -65,7 +65,10 @@ export default {
   },
   methods: { 
     async fetchUsers() {
-      return axios.get('http://localhost:8081/users')
+      const token = window.localStorage.getItem('auth');
+      return axios.get('http://localhost:8081/users', {
+        headers: { Authorization: `JWT ${token}` }
+      })
       .then((response) => {
         this.users = response.data.user
       })

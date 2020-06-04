@@ -64,6 +64,9 @@ div.carousel-image-3 {
   background-size: cover;
   width: 100%;
 }
+#blog-body{
+  background:linear-gradient(rgba(0, 0, 0, .8), rgba(0, 0, 0, .5)) !important;
+}
 section#home-heading {
   position: relative;
   min-height: 450px;

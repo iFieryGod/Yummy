@@ -28,24 +28,30 @@
           <button class="close" data-dismiss="modal"><span>×</span></button>
         </div>
         <div class="modal-body">
-          <form ref='form'>
+          <form enctype="multipart/form-data" ref='form' @submit.prevent='submit'>
             <div class="form-group">
               <label for="title" class="col-form-label">Title</label>
               <input class="form-control" v-model='title' type="text" required/>
             </div>
-            <!-- <div class="form-group">
-              <label for="image" class="col-form-label">Upload Image</label>
-              <div class="custom-file">
-                <input class="custom-file-input" type="file" name="image" id="image"/>
-                <label class="custom-file-label" for="image">Choose file</label>
+            <div class="form-group">
+              <label class="col-form-label">Upload Image</label>
+              <div class="dropbox">
+                <input class="custom-file-input" accept="image/*" type="file" ref='file' @change="onSelect"/>
+                <p>Drag you files here</p>
               </div>
               <small class="form-text text-muted">Max Size 5mb</small>
-            </div> -->
+              <div class="message">
+                <p class="text-dark">{{ message }}</p>
+              </div>
+              <div>
+                <img v-show="showPreview" v-bind:src="previewImage" class="uploading-image">
+              </div>
+            </div>
             <div class="form-group">
               <label for="body" class="col-form-label">Body</label>
               <textarea class="form-control" v-model='description' required></textarea>
             </div>
-            <button class="btn btn-warning mt-2 text-white font-weight-bold" @click="submit">Save Changes</button>
+            <button class="btn btn-warning mt-2 text-white font-weight-bold" type="submit">Save Changes</button>
               <button class="btn btn-warning mt-2 ml-2 text-white font-weight-bold" @click="clear">Reset Form</button>
           </form>
         </div>
@@ -98,34 +104,66 @@ export default {
   data: () => ({
     title: '',
     description: '',
+    file: '',
+    message: '',
+    previewImage: '',
+    showPreview: false,
     posts: [],
   }),
   mounted() {
     this.fetchPosts();
  },
   methods: {
-    submit(e) {
-        e.preventDefault();
-        return axios.post('http://localhost:8081/posts',
-          {  title: this.title,
-             description: this.description
-          },
-          { headers: {
-            'Content-Type': 'application/json'
-          }
-        })
-        .then(() => {
-          // Thinking of adding a function to route back to the home page or taskCreate page
-          // this.$router.push({ name: 'Home'})
-          this.$refs.form.reset();
-        }).catch(() => {
-        });
+    onSelect() {
+      const allowedTypes = ["image/jpg", "image/jpeg", "image/png"];
+      const file = this.$refs.file.files[0];
+      this.file = file;
+      if(!allowedTypes.includes(file.type)){
+        this.message = 'Only images are required!!'
+      }
+      if(file.size>5000000){
+        this.message = 'Too large, max size allowed is 5mb'
+      }
+      const reader = new FileReader();
+      reader.readAsDataURL(file)
+      reader.addEventListener("load", function () {
+        this.showPreview = true;
+        this.previewImage = reader.result;
+      }.bind(this), false);
+      
+      if(file){
+
+        if( /\.(jpe?g|png|gif)$/i.test( this.file.name)){
+
+          reader.readAsDataURL( this.file)
+        }
+      }
     },
+   submit() {
+      const formData = new FormData();
+      formData.append('img', this.file)
+      formData.append('title', this.title)
+      formData.append('description', this.description)
+      axios.post('http://localhost:8081/posts', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
+      })
+      .then(() => {
+        this.message = 'Uploaded!'
+        this.$refs.form.reset();
+      })
+      .catch((error) => {
+         console.log(error)
+        this.message = error.response.data.error
+      })
+      },
     clear() {
       this.$refs.form.reset();
     },
     async fetchPosts(){
-      return axios.get('http://localhost:8081/posts')
+      const token = window.localStorage.getItem('auth');
+      return axios.get('http://localhost:8081/posts', { headers: { Authorization: `${token}` }})
       .then((response) => {
         this.posts = response.data
       })
@@ -134,5 +172,37 @@ export default {
       })
     },
   },
-};
+}
 </script>
+<style scoped>
+.dropbox {
+  outline: 2px dashed darkslategrey; /* the dashed box */
+  outline-offset: -10px;
+  background: rgb(240, 240, 44);
+  color: dimgray;
+  padding: 10px 10px;
+  min-height: 200px;
+  position: relative;
+  cursor: pointer;
+}
+.custom-file-input {
+  opacity: 0;
+  width: 100%;
+  height: 200px;
+  position: absolute;
+  cursor: pointer;
+}
+.dropbox:hover {
+  background: rgba(236, 236, 48, 0.863);
+}
+.dropbox p {
+  font-size: 1.2rem;
+  text-align: center;
+  padding: 50px 0;
+  color: black;
+}
+.uploading-image {
+  display: flex;
+  width: 12rem;
+}
+</style>
